@@ -14,6 +14,9 @@ import com.mobileapp.symbio.server.ServerConnection;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.view.animation.RotateAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 
 import java.util.*;
 
@@ -49,6 +52,7 @@ public class DashboardActivity extends Activity {
     private ProgressDialog progressDialog;
     private List<Integer> mOrderId;
     RelativeLayout mLayout;
+    private RotateAnimation mAnimation;
 
     public DashboardActivity() {
         items = new ArrayList<MenuItem>();
@@ -166,6 +170,7 @@ public class DashboardActivity extends Activity {
                             String text = linearView.getTag(R.id.tag_menuitem).toString();
                             ImageView image = (ImageView)view.findViewById(R.id.dashboardMenuItemImageView);
                             image.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_busy));
+                            image.setAnimation(mAnimation);
                             ArrayList<String> passing = new ArrayList<String>();
                             passing.add(text);
                             passing.add(linearView.getTag(R.id.tag_mlayout_position).toString());
@@ -253,6 +258,8 @@ public class DashboardActivity extends Activity {
                 statusImage.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_invisible));
             }
 
+            statusImage.setAnimation(null);
+
             currentLayout.setClickable(true);
         }
     }
@@ -267,6 +274,11 @@ public class DashboardActivity extends Activity {
         progressDialog.show();
 
         mLayout = (RelativeLayout)findViewById(R.id.dashboardLayout);
+
+        mAnimation = new RotateAnimation(0f, 350f, 15f, 15f);
+        mAnimation.setInterpolator(new LinearInterpolator());
+        mAnimation.setRepeatCount(Animation.INFINITE);
+        mAnimation.setDuration(700);
 
         new DownLoadMenuItemsTask().execute();
     }

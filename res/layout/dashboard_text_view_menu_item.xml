@@ -7,14 +7,14 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/dashboard"
-        android:paddingTop="5dp">
+        android:paddingTop="5dp" android:paddingBottom="5dp">
     <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Menu Suppe"
             style="@android:style/TextAppearance.DeviceDefault"
             android:id="@+id/dashboardMenuItemTextView" android:layout_weight="9"
-            android:typeface="normal" android:paddingLeft="16dp" android:paddingTop="4dp" android:paddingRight="4dp"
+            android:typeface="normal" android:paddingLeft="25dp" android:paddingTop="4dp" android:paddingRight="4dp"
             android:layout_gravity="center_vertical"/>
     <ImageView
             android:layout_width="0dp"
