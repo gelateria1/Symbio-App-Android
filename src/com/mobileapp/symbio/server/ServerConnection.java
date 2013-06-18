@@ -35,6 +35,7 @@ public class ServerConnection {
     public static final String COMMAND_GET_ALL_MENU_ITEMS = "show";
     public static final String COMMAND_MY_ORDERS          = "my_orders";
     public static final String COMMAND_LOGIN              = "users/sign_in";
+    public static final String COMMAND_ORDER_ITEM          = "orders/toggle.json?menu_item_id=";
 
     public static String getHttpRequestContent(HttpClient client, String url) {
         StringBuilder builder = new StringBuilder();
@@ -126,4 +127,42 @@ public class ServerConnection {
         }
     }
 
+    public static boolean orderItem(HttpClient client, String url, int itemID)
+    {
+        StringBuilder builder = new StringBuilder();
+        HttpGet httpGet = new HttpGet(url + "/" + COMMAND_ORDER_ITEM + itemID);
+
+        try {
+            HttpResponse response = client.execute(httpGet);
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+
+            if (statusCode == 200) {
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(content));
+
+                String line = null;
+
+                int counter = 0;
+
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line);
+                    Log.v("ServerConnection", "read new line number " + counter);
+                    counter++;
+                }
+
+            } else {
+                Log.e(ServerConnection.class.toString(),
+                        "Failed to download file");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String returnString = builder.toString();
+
+        return false;
+    }
 }
