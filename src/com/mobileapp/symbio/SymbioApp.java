@@ -1,6 +1,8 @@
 package com.mobileapp.symbio;
 
 import android.app.Application;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,6 +16,7 @@ public class SymbioApp extends Application{
     private String username;
     private String password;
     private String url;
+    private HttpClient httpClient;
 
     private static SymbioApp instance;
 
@@ -25,6 +28,7 @@ public class SymbioApp extends Application{
     public void onCreate() {
         super.onCreate();
         instance = this;
+        httpClient = new DefaultHttpClient();
     }
 
     public String getUsername() {
@@ -49,5 +53,13 @@ public class SymbioApp extends Application{
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public HttpClient getHttpClient() {
+        return httpClient;
+    }
+
+    public void setHttpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
     }
 }

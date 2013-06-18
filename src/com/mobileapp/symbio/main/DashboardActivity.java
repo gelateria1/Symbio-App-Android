@@ -59,7 +59,12 @@ public class DashboardActivity extends Activity {
         protected String doInBackground(String... urls) {
             SymbioApp instance = (SymbioApp)getApplication();
 
-            String jsonFile = ServerConnection.getHttpRequestContent(
+            // Login first
+            ServerConnection.tryToLogin(instance.getHttpClient(), instance.getUrl(), instance.getUsername(),
+                    instance.getPassword());
+
+
+            String jsonFile = ServerConnection.getHttpRequestContent(instance.getHttpClient(),
                     instance.getUrl()  + "/api/" + ServerConnection.COMMAND_GET_ALL_MENU_ITEMS
             );
 

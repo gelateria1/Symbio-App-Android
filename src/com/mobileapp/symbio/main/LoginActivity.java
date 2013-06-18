@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.mobileapp.symbio.R;
 import com.mobileapp.symbio.SymbioApp;
+import com.mobileapp.symbio.server.ServerConnection;
 
 import java.io.*;
 import java.util.ArrayList;

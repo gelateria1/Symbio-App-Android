@@ -1,17 +1,25 @@
 package com.mobileapp.symbio.server;
 
 import android.util.Log;
+import com.mobileapp.symbio.SymbioApp;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,10 +31,11 @@ import java.io.InputStreamReader;
 public class ServerConnection {
 
     public static final String COMMAND_GET_ALL_MENU_ITEMS = "show";
+    public static final String COMMAND_LOGIN              = "users/sign_in";
 
-    public static String getHttpRequestContent(String url) {
+    public static String getHttpRequestContent(HttpClient client, String url) {
         StringBuilder builder = new StringBuilder();
-        HttpClient client = new DefaultHttpClient();
+        client = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(url);
 
         try {
@@ -61,6 +70,31 @@ public class ServerConnection {
         String returnString = builder.toString();
 
         return returnString;
+    }
+
+    public static void tryToLogin(HttpClient httpClient, String url, String username, String password)
+    {
+        // Create a new HttpClient and Post Header
+        HttpPost httppost = new HttpPost(url + "/" + COMMAND_LOGIN);
+        HttpResponse response;
+
+        try {
+            // Add your data
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("user[password]", password));
+            nameValuePairs.add(new BasicNameValuePair("user[email]", username));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            // Execute HTTP Post Request
+            response = httpClient.execute(httppost);
+
+            System.out.println(response.getStatusLine());
+
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+        }
     }
 
 }
