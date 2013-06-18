@@ -2,12 +2,11 @@ package com.mobileapp.symbio.main;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.*;
 import com.mobileapp.symbio.R;
 import com.mobileapp.symbio.SymbioApp;
 import com.mobileapp.symbio.data.MenuItem;
@@ -130,21 +129,18 @@ public class DashboardActivity extends Activity {
 
             for (int i = 0; i < items.size(); i++) {
                 if (i == 0 || items.get(i-1).getDate().compareTo(items.get(i).getDate()) != 0) {
-
-                        mTextViewWeekday.add((TextView)getLayoutInflater().inflate(R.layout.dashboard_text_view_date, null));
-                        mTextViewWeekday.get(mTextViewWeekday.size() - 1).setId(currentId);
-                        mTextViewWeekday.get(mTextViewWeekday.size() - 1).setText(getWeekdayFromDate(items.get(i).getDate()));
-                        mLayoutParams.add(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-                        if(i != 0 && currentId != 1)
-                            mLayoutParams.get(mLayoutParams.size() - 1).addRule(RelativeLayout.BELOW, currentId - 1);
-                        else
-                            mLayoutParams.get(mLayoutParams.size() - 1).addRule(RelativeLayout.ALIGN_PARENT_TOP);
+                    mTextViewWeekday.add((TextView)getLayoutInflater().inflate(R.layout.dashboard_text_view_date, null));
+                    mTextViewWeekday.get(mTextViewWeekday.size() - 1).setId(currentId);
+                    mTextViewWeekday.get(mTextViewWeekday.size() - 1).setText(getWeekdayFromDate(items.get(i).getDate()));
+                    mLayoutParams.add(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                    if(i != 0 && currentId != 1)
+                        mLayoutParams.get(mLayoutParams.size() - 1).addRule(RelativeLayout.BELOW, currentId - 1);
+                    else
+                        mLayoutParams.get(mLayoutParams.size() - 1).addRule(RelativeLayout.ALIGN_PARENT_TOP);
                     mTextViewWeekday.get(mTextViewWeekday.size() - 1).setLayoutParams(mLayoutParams.get(mLayoutParams.size() - 1));
 
-                    GregorianCalendar compareDate = items.get(i).getDate() ;
-
                     if(currentDate.compareTo(items.get(i).getDate()) > 0)
-                        mTextViewWeekday.get(mTextViewWeekday.size() - 1).setBackgroundColor(0xAAAAAA);
+                        mTextViewWeekday.get(mTextViewWeekday.size() - 1).setBackgroundColor(Color.GRAY);
 
                     mLayout.addView(mTextViewWeekday.get(mTextViewWeekday.size() - 1));
                     currentId++;
@@ -152,8 +148,27 @@ public class DashboardActivity extends Activity {
 
                 mLinearLayoutViews.add((LinearLayout)getLayoutInflater().inflate(R.layout.dashboard_text_view_menu_item, null));
                 TextView textView = (TextView)mLinearLayoutViews.get(mLinearLayoutViews.size() - 1).findViewById(R.id.dashboardMenuItemTextView);
+                textView.setTag(items.get(i).getItemID());
                 ImageView imageView = (ImageView)mLinearLayoutViews.get(mLinearLayoutViews.size() - 1).findViewById(R.id.dashboardMenuItemImageView);
                 mLinearLayoutViews.get(mLinearLayoutViews.size() - 1).setId(currentId);
+
+                if(currentDate.compareTo(items.get(i).getDate()) > 0) {
+                    mLinearLayoutViews.get(mLinearLayoutViews.size() - 1).setBackgroundColor(Color.GRAY);
+                    textView.setTextColor(Color.WHITE);
+                }
+                else {
+                    textView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            TextView textView1 = (TextView)view;
+                            String text = textView1.getTag().toString();
+                            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                }
+
+
                 textView.setText(items.get(i).getName());
                 if(items.get(i).isOrdered()) {
                     imageView.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_online));
@@ -161,6 +176,7 @@ public class DashboardActivity extends Activity {
                 mLayoutParams.add(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
                 mLayoutParams.get(mLayoutParams.size() - 1).addRule(RelativeLayout.BELOW, currentId - 1);
                 mLinearLayoutViews.get(mLinearLayoutViews.size() - 1).setLayoutParams(mLayoutParams.get(mLayoutParams.size() - 1));
+
                 mLayout.addView(mLinearLayoutViews.get(mLinearLayoutViews.size() - 1));
                 currentId++;
             }
@@ -173,19 +189,19 @@ public class DashboardActivity extends Activity {
             int day = date.get(Calendar.DAY_OF_WEEK);
 
             switch (day) {
-                case 4:
+                case 2:
                     value = "Montag";
                     break;
-                case 5:
+                case 3:
                     value = "Dienstag";
                     break;
-                case 6:
+                case 4:
                     value = "Mittwoch";
                     break;
-                case 7:
+                case 5:
                     value = "Donnerstag";
                     break;
-                case 1:
+                case 6:
                     value = "Freitag";
                     break;
             }
