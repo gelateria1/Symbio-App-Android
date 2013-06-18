@@ -162,8 +162,10 @@ public class DashboardActivity extends Activity {
                         public void onClick(View view) {
                             TextView textView1 = (TextView)view;
                             String text = textView1.getTag().toString();
-                            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-
+                            Toast.makeText(getApplicationContext(), "Ordering Menu Item", Toast.LENGTH_SHORT).show();
+                            ArrayList<String> passing = new ArrayList<String>();
+                            passing.add(text);
+                            new OrderItemTask().execute(passing);
                         }
                     });
                 }
@@ -209,6 +211,25 @@ public class DashboardActivity extends Activity {
             value += ", " + date.get(Calendar.DAY_OF_MONTH) + "." + (date.get(Calendar.MONTH) + 1) + "." + date.get(Calendar.YEAR);
 
             return value;
+        }
+    }
+
+    private class OrderItemTask extends AsyncTask<ArrayList<String>, Void, ArrayList<String>> {
+
+        protected ArrayList<String> doInBackground(ArrayList<String>... passing) {
+
+            ArrayList<String> passed = passing[0];
+
+            SymbioApp instance = (SymbioApp)getApplication();
+
+            ServerConnection.orderItem(instance.getHttpClient(), instance.getUrl(),
+                                    Integer.parseInt(passed.get(0)));
+
+            return null;
+        }
+
+        protected void onPostExecute(ArrayList<String> result) {
+
         }
     }
 
