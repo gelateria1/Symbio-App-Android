@@ -2,9 +2,12 @@ package com.mobileapp.symbio.main;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.*;
 import com.mobileapp.symbio.R;
@@ -166,9 +169,9 @@ public class DashboardActivity extends Activity {
                         @Override
                         public void onClick(View view) {
                             view.setClickable(false);
-                            LinearLayout linearView = (LinearLayout)view;
+                            LinearLayout linearView = (LinearLayout) view;
                             String text = linearView.getTag(R.id.tag_menuitem).toString();
-                            ImageView image = (ImageView)view.findViewById(R.id.dashboardMenuItemImageView);
+                            ImageView image = (ImageView) view.findViewById(R.id.dashboardMenuItemImageView);
                             image.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_busy));
                             image.setAnimation(mAnimation);
                             ArrayList<String> passing = new ArrayList<String>();
@@ -281,5 +284,29 @@ public class DashboardActivity extends Activity {
         mAnimation.setDuration(700);
 
         new DownLoadMenuItemsTask().execute();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.layout.menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.menu_logout:
+                intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.menu_info:
+                intent = new Intent(this, InfoActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
