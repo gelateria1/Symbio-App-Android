@@ -15,6 +15,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -153,15 +155,25 @@ public class ServerConnection {
                     counter++;
                 }
 
+
+                String returnString = builder.toString();
+                JSONObject jsonObject = new JSONObject(returnString);
+                String status = jsonObject.getString("status");
+
+                if(status.compareTo("new") == 0) {
+                    return true;
+                }
+
+
             } else {
                 Log.e(ServerConnection.class.toString(),
                         "Failed to download file");
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-
-        String returnString = builder.toString();
 
         return false;
     }

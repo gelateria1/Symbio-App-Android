@@ -148,7 +148,8 @@ public class DashboardActivity extends Activity {
 
                 mLinearLayoutViews.add((LinearLayout)getLayoutInflater().inflate(R.layout.dashboard_text_view_menu_item, null));
                 TextView textView = (TextView)mLinearLayoutViews.get(mLinearLayoutViews.size() - 1).findViewById(R.id.dashboardMenuItemTextView);
-                textView.setTag(items.get(i).getItemID());
+                mLinearLayoutViews.get(mLinearLayoutViews.size() - 1).setTag(R.id.tag_menuitem, items.get(i).getItemID());
+                mLinearLayoutViews.get(mLinearLayoutViews.size() - 1).setTag(R.id.tag_mlayout_position, mLinearLayoutViews.size() - 1);
                 ImageView imageView = (ImageView)mLinearLayoutViews.get(mLinearLayoutViews.size() - 1).findViewById(R.id.dashboardMenuItemImageView);
                 mLinearLayoutViews.get(mLinearLayoutViews.size() - 1).setId(currentId);
 
@@ -157,14 +158,17 @@ public class DashboardActivity extends Activity {
                     textView.setTextColor(Color.WHITE);
                 }
                 else {
-                    textView.setOnClickListener(new View.OnClickListener() {
+                    mLinearLayoutViews.get(mLinearLayoutViews.size() - 1).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            TextView textView1 = (TextView)view;
-                            String text = textView1.getTag().toString();
-                            Toast.makeText(getApplicationContext(), "Ordering Menu Item", Toast.LENGTH_SHORT).show();
+                            view.setClickable(false);
+                            LinearLayout linearView = (LinearLayout)view;
+                            String text = linearView.getTag(R.id.tag_menuitem).toString();
+                            ImageView image = (ImageView)view.findViewById(R.id.dashboardMenuItemImageView);
+                            image.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_busy));
                             ArrayList<String> passing = new ArrayList<String>();
                             passing.add(text);
+                            passing.add(linearView.getTag(R.id.tag_mlayout_position).toString());
                             new OrderItemTask().execute(passing);
                         }
                     });
@@ -216,13 +220,21 @@ public class DashboardActivity extends Activity {
 
     private class OrderItemTask extends AsyncTask<ArrayList<String>, Void, ArrayList<String>> {
 
+        private boolean status;
+        private ImageView statusImage;
+        LinearLayout currentLayout;
+
         protected ArrayList<String> doInBackground(ArrayList<String>... passing) {
 
             ArrayList<String> passed = passing[0];
 
+            currentLayout = mLinearLayoutViews.get(Integer.parseInt(passed.get(1)));
+
+            statusImage = (ImageView)currentLayout.findViewById(R.id.dashboardMenuItemImageView);
+
             SymbioApp instance = (SymbioApp)getApplication();
 
-            ServerConnection.orderItem(instance.getHttpClient(), instance.getUrl(),
+            status = ServerConnection.orderItem(instance.getHttpClient(), instance.getUrl(),
                                     Integer.parseInt(passed.get(0)));
 
             return null;
@@ -230,6 +242,18 @@ public class DashboardActivity extends Activity {
 
         protected void onPostExecute(ArrayList<String> result) {
 
+            if(status)
+            {
+                Toast.makeText(getApplicationContext(), "Menü bestellt.", Toast.LENGTH_SHORT).show();
+                statusImage.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_online));
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(), "Menü abbestellt.", Toast.LENGTH_SHORT).show();
+                statusImage.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_invisible));
+            }
+
+            currentLayout.setClickable(true);
         }
     }
 
