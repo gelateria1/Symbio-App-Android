@@ -166,14 +166,24 @@ public class DashboardActivity extends Activity {
                         @Override
                         public void onClick(View view) {
                             view.setClickable(false);
-                            LinearLayout linearView = (LinearLayout)view;
+                            LinearLayout linearView = (LinearLayout) view;
                             String text = linearView.getTag(R.id.tag_menuitem).toString();
-                            ImageView image = (ImageView)view.findViewById(R.id.dashboardMenuItemImageView);
+
+                            MenuItem item = null;
+                            for (int i = 0; i < items.size(); i++) {
+                                if (items.get(i).getItemID() == Integer.parseInt(text)) {
+                                    item = items.get(i);
+                                    break;
+                                }
+                            }
+
+                            ImageView image = (ImageView) view.findViewById(R.id.dashboardMenuItemImageView);
                             image.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_busy));
                             image.setAnimation(mAnimation);
                             ArrayList<String> passing = new ArrayList<String>();
                             passing.add(text);
                             passing.add(linearView.getTag(R.id.tag_mlayout_position).toString());
+                            passing.add(Double.toString(item.getPrice()));
                             new OrderItemTask().execute(passing);
                         }
                     });
@@ -242,19 +252,19 @@ public class DashboardActivity extends Activity {
             status = ServerConnection.orderItem(instance.getHttpClient(), instance.getUrl(),
                                     Integer.parseInt(passed.get(0)));
 
-            return null;
+            return passed;
         }
 
         protected void onPostExecute(ArrayList<String> result) {
 
             if(status)
             {
-                Toast.makeText(getApplicationContext(), "Menü bestellt.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Menü bestellt. Preis: " + result.get(2) + " EUR" , Toast.LENGTH_SHORT).show();
                 statusImage.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_online));
             }
             else
             {
-                Toast.makeText(getApplicationContext(), "Menü abbestellt.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Menü abbestellt." , Toast.LENGTH_SHORT).show();
                 statusImage.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_invisible));
             }
 
