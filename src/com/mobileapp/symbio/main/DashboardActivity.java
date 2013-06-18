@@ -2,9 +2,10 @@ package com.mobileapp.symbio.main;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.mobileapp.symbio.R;
@@ -43,15 +44,17 @@ public class DashboardActivity extends Activity {
         }
     }
 
-    private List<TextView> mTextViews;
+    private List<LinearLayout> mLinearLayoutViews;
+    private List<TextView> mTextViewWeekday;
     private List<RelativeLayout.LayoutParams> mLayoutParams;
     private ProgressDialog progressDialog;
     RelativeLayout mLayout;
 
     public DashboardActivity() {
         items = new ArrayList<MenuItem>();
-        mTextViews = new ArrayList<TextView>();
+        mLinearLayoutViews = new ArrayList<LinearLayout>();
         mLayoutParams = new ArrayList<RelativeLayout.LayoutParams>();
+        mTextViewWeekday = new ArrayList<TextView>();
     }
 
     private class DownLoadMenuItemsTask extends AsyncTask<String, Void, String> {
@@ -102,28 +105,44 @@ public class DashboardActivity extends Activity {
 
             int currentId = 1;
 
+
+            /*mLinearLayoutViews.add((LinearLayout)getLayoutInflater().inflate(R.layout.dashboard_text_view_menu_item, null));
+            TextView textView = (TextView)mLinearLayoutViews.get(0).findViewById(R.id.dashboardMenuItemTextView);
+            ImageView imageView = (ImageView)mLinearLayoutViews.get(0).findViewById(R.id.dashboardMenuItemImageView);
+            mLinearLayoutViews.get(0).setId(currentId);
+            textView.setText(getWeekdayFromDate(items.get(0).getDate()));
+            mLayoutParams.add(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+            mLayoutParams.get(0).addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            mLinearLayoutViews.get(0).setLayoutParams(mLayoutParams.get(mLayoutParams.size() - 1));
+            mLayout.addView(mLinearLayoutViews.get(0));
+            currentId++;*/
+
+
             for (int i = 0; i < items.size(); i++) {
                 if (i == 0 || items.get(i-1).getDate().get(Calendar.DAY_OF_WEEK) != items.get(i).getDate().get(Calendar.DAY_OF_WEEK)) {
-                    mTextViews.add((TextView)getLayoutInflater().inflate(R.layout.dashboard_text_view_date, null));
-                    mTextViews.get(mTextViews.size() - 1).setId(currentId);
-                    mTextViews.get(mTextViews.size() - 1).setText(getWeekdayFromDate(items.get(i).getDate()));
+
+                    mTextViewWeekday.add((TextView)getLayoutInflater().inflate(R.layout.dashboard_text_view_date, null));
+                    mTextViewWeekday.get(mTextViewWeekday.size() - 1).setId(currentId);
+                    mTextViewWeekday.get(mTextViewWeekday.size() - 1).setText(getWeekdayFromDate(items.get(i).getDate()));
                     mLayoutParams.add(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
                     if(i != 0 && currentId != 1)
                         mLayoutParams.get(mLayoutParams.size() - 1).addRule(RelativeLayout.BELOW, currentId - 1);
                     else
                         mLayoutParams.get(mLayoutParams.size() - 1).addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                    mTextViews.get(mTextViews.size() - 1).setLayoutParams(mLayoutParams.get(mLayoutParams.size() - 1));
-                    mLayout.addView(mTextViews.get(mTextViews.size() - 1));
+                    mTextViewWeekday.get(mTextViewWeekday.size() - 1).setLayoutParams(mLayoutParams.get(mLayoutParams.size() - 1));
+                    mLayout.addView(mTextViewWeekday.get(mTextViewWeekday.size() - 1));
                     currentId++;
                 }
 
-                mTextViews.add((TextView)getLayoutInflater().inflate(R.layout.dashboard_text_view_menu_item, null));
-                mTextViews.get(mTextViews.size() - 1).setId(currentId);
-                mTextViews.get(mTextViews.size() - 1).setText(items.get(i).getName());
-                mLayoutParams.add(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                mLinearLayoutViews.add((LinearLayout)getLayoutInflater().inflate(R.layout.dashboard_text_view_menu_item, null));
+                TextView textView = (TextView)mLinearLayoutViews.get(mLinearLayoutViews.size() - 1).findViewById(R.id.dashboardMenuItemTextView);
+                ImageView imageView = (ImageView)mLinearLayoutViews.get(mLinearLayoutViews.size() - 1).findViewById(R.id.dashboardMenuItemImageView);
+                mLinearLayoutViews.get(mLinearLayoutViews.size() - 1).setId(currentId);
+                textView.setText(items.get(i).getName());
+                mLayoutParams.add(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
                 mLayoutParams.get(mLayoutParams.size() - 1).addRule(RelativeLayout.BELOW, currentId - 1);
-                mTextViews.get(mTextViews.size() - 1).setLayoutParams(mLayoutParams.get(mLayoutParams.size() - 1));
-                mLayout.addView(mTextViews.get(mTextViews.size() - 1));
+                mLinearLayoutViews.get(mLinearLayoutViews.size() - 1).setLayoutParams(mLayoutParams.get(mLayoutParams.size() - 1));
+                mLayout.addView(mLinearLayoutViews.get(mLinearLayoutViews.size() - 1));
                 currentId++;
             }
 

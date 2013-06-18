@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TextView
+
+
+<LinearLayout
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="Laurasuppe"
-        xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/textView"
-        style="@android:style/TextAppearance.DeviceDefault"
-        android:typeface="normal" android:paddingLeft="16dp" android:paddingTop="4dp" android:paddingRight="4dp"
-        android:paddingBottom="4dp"></TextView>
+        android:layout_height="wrap_content" xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/dashboard"
+        android:paddingTop="5dp">
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Menu Suppe"
+            style="@android:style/TextAppearance.DeviceDefault"
+            android:id="@+id/dashboardMenuItemTextView" android:layout_weight="9"
+            android:typeface="normal" android:paddingLeft="16dp" android:paddingTop="4dp" android:paddingRight="4dp"
+            android:layout_gravity="center_vertical"/>
+    <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/dashboardMenuItemImageView" android:scaleType="fitEnd"
+            android:textAlignment="viewEnd" android:layout_weight="4" android:src="@android:drawable/presence_online"
+            android:layout_gravity="center_vertical|right" android:layout_marginRight="4dp"/>
+</LinearLayout>
+
+
+
+
