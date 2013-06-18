@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Montag 13.6.2013"
+        xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/textView"
+        style="@android:style/TextAppearance.DeviceDefault.Large" android:background="#abd1ff" android:padding="8dp"
+        android:textStyle="bold|italic" android:typeface="serif"></TextView>
