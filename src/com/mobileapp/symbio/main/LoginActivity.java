@@ -78,6 +78,8 @@ public class LoginActivity extends Activity {
                 instance.setPassword(mEditTextPassword.getText().toString());
 
                 Intent i = new Intent(LoginActivity.this, DashboardActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 LoginActivity.this.startActivity(i);
             }
         });
