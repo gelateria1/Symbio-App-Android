@@ -171,7 +171,6 @@ public class DashboardActivity extends Activity {
                             view.setClickable(false);
                             LinearLayout linearView = (LinearLayout) view;
                             String text = linearView.getTag(R.id.tag_menuitem).toString();
-<<<<<<< HEAD
 
                             MenuItem item = null;
                             for (int i = 0; i < items.size(); i++) {
@@ -181,8 +180,6 @@ public class DashboardActivity extends Activity {
                                 }
                             }
 
-=======
->>>>>>> 8d36b4e2e34e2cca8da0663eb232560a5d604ea4
                             ImageView image = (ImageView) view.findViewById(R.id.dashboardMenuItemImageView);
                             image.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_busy));
                             image.setAnimation(mAnimation);
