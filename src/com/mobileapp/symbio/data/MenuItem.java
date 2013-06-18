@@ -17,6 +17,7 @@ public class MenuItem {
     private double price;
     private String name;
     GregorianCalendar date;
+    private boolean isOrdered;
 
     public static int SOUP          = 1;
     public static int MAIN_MENU_1   = 2;
@@ -27,12 +28,21 @@ public class MenuItem {
     public static int DESSERT_1     = 7;
     public static int DESSERT_2     = 8;
 
-        public MenuItem(int itemID, int categoryID, double price, String name, String date) {
+        public MenuItem(int itemID, int categoryID, double price, String name, String date, boolean isOrdered) {
             this.itemID = itemID;
             this.categoryID = categoryID;
             this.price = price;
             this.name = name;
             dateToGregorianCalendar(date);
+            this.isOrdered = isOrdered;
+    }
+
+    public boolean isOrdered() {
+        return isOrdered;
+    }
+
+    public void setOrdered(boolean ordered) {
+        isOrdered = ordered;
     }
 
     public int getItemID() {
@@ -79,6 +89,6 @@ public class MenuItem {
         int year  = Integer.parseInt(date.substring(0, 4));
         int month = Integer.parseInt(date.substring(5, 7));
         int day   = Integer.parseInt(date.substring(8,10));
-        this.date = new GregorianCalendar(year, month, day);
+        this.date = new GregorianCalendar(year, month - 1, day);
     }
 }
